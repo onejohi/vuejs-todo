@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav nav-pills nav-justified">
+  <nav class="nav nav-pills nav-justified m-2">
     <router-link
       class="flex-sm-fill text-sm-center nav-link"
       :class="$route.name === 'mydos' ? 'active' : ''"
