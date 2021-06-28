@@ -6,6 +6,10 @@ import WeDo from './components/Home/WeDo.vue';
 import Users from './components/Home/Users.vue';
 import Me from './components/Home/Me.vue';
 
+import Auth from './components/Auth.vue';
+import Login from './components/Auth/Login.vue';
+import Register from './components/Auth/Register.vue';
+
 export default createRouter({
   history: createWebHistory(),
   routes: [
@@ -15,5 +19,9 @@ export default createRouter({
       { path: 'users', name: 'users', component: Users },
       { path: 'me', name: 'me', component: Me }
     ] },
+    { path: '/login', name: 'auth', component: Auth, children: [
+      { path: '/', name: 'login', component: Login },
+      { path: '/register', name: 'register', component: Register }
+    ]}
   ],
 });
