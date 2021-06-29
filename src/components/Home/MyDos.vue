@@ -103,15 +103,3 @@ export default {
   name: 'MyDos'
 }
 </script>
-
-<style scoped>
-.offcanvas-bottom {
-  height: 50vh;
-}
-
-@media screen and (max-width: 340px) {
-  .offcanvas-bottom {
-    height: 80vh !important;
-  }
-}
-</style>

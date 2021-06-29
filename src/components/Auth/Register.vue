@@ -5,25 +5,47 @@
       <h1 class="h3 mb-3 fw-normal">Create a new account</h1>
 
       <div class="form-floating">
-        <input type="name" class="form-control" id="floatingName" placeholder="Name">
+        <input type="username" class="form-control" id="floatingName" v-model="username" placeholder="Name">
         <label for="floatingName">Username</label>
       </div>
       <div class="form-floating mt-3">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <input type="email" class="form-control" id="floatingInput" v-model="email" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>
       </div>
       <div class="form-floating mt-3">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <input type="password" class="form-control" id="floatingPassword" v-model="password" placeholder="Password">
         <label for="floatingPassword">Password</label>
       </div>
-      <button class="w-100 mt-3 btn btn-lg btn-primary" type="submit">Register</button>
+      <button @click="signUpAttempt($event)" class="w-100 mt-3 btn btn-lg btn-primary" type="submit">Register</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     </form>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Register',
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    ...mapActions([
+      'signup',
+    ]),
+    signUpAttempt(e) {
+      e.preventDefault();
+      this.signup({
+        username: this.username, 
+        email: this.email,
+        password: this.password
+      });
+    }
+  }
 }
 </script>
