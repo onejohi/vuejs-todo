@@ -24,5 +24,5 @@ createApp(App)
   .mount('#app');
 
 auth.onAuthStateChanged((user) => {
-  if (user) store.dispatch('fetchUserProfile', user);
+  if (user) (store.dispatch('fetchUserProfile', user), router.push('/'));
 });

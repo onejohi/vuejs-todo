@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid pt-5">
     <nav class="navbar fixed-bottom navbar-light bg-light">
       <div class="container-fluid">
         <button
@@ -15,14 +15,30 @@
 
     <div class="container-fluid">
       <div class="row mt-2 row-cols-1 row-cols-md-3">
-        <div class="col col-12 col-md-4">
-          <div class="card">
+        <div v-if="incompleteTasks.length <= 0" class="card mt-5">
             <div class="card-body">
-              <h5 class="card-title">Task title</h5>
-              <p class="card-text">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis nesciunt repellendus dolores modi optio eaque animi dolore mollitia! Nesciunt, a?
+              <p class="card-text text-center">
+                No tasks
               </p>
-              <a href="#" class="btn btn-sm mx-2 btn-primary">Complete</a>
+            </div>
+          </div>
+        <div v-else v-for="task in incompleteTasks" :key="task.id" class="col col-12 col-md-4">
+
+          <div class="card my-2">
+            <div
+              class="card-body text-primary"
+              :class="task.priority === 'urgent' ? 'text-danger' : 'text-secondary'">
+              <h5 class="fs-6">{{ task.title }}</h5>
+              <p class="card-text text-sm">
+                {{ task.description }}
+              </p>
+              <hr>
+              <div class="form-check">
+                <input class="form-check-input" @click="$store.dispatch('completeTask', task)" type="checkbox" value="">
+                <label class="form-check-label">
+                  Complete task
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -48,29 +64,39 @@
                 type="text"
                 class="form-control"
                 name="title"
+                v-model="title"
                 placeholder="Title">
             </div>
             <div class="mb-3">
               <textarea
                 placeholder="Description"
                 class="form-control"
+                v-model="description"
                 rows="1"></textarea>
             </div>
           </div>
           <div class="col col-12 col-md-6">
             <div class="row">
               <div class="col">
-                <select class="form-select" aria-label="Priority">
-                  <option selected>Priority</option>
-                  <option value="1">Urgent</option>
-                  <option value="2">Not Urgent</option>
-                  <option value="3">Do Later</option>
+                <select v-model="priority" class="form-select" aria-label="Priority">
+                  <option value="" selected>Priority</option>
+                  <option value="urgent">Urgent</option>
+                  <option value="noturgent">Not Urgent</option>
+                  <option value="dolater">Do Later</option>
                 </select>
               </div>
               <div class="col">
                 <div class="d-grid gap-2">
-                  <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                  <label class="btn btn-secondary" for="option1">Private</label>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      :checked="private_task"
+                      @click="private_task = !private_task"
+                      type="checkbox">
+                    <label class="form-check-label">
+                      {{ private_task ? 'Private' : 'Public' }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -81,25 +107,66 @@
                 </div>
               </div>
               <div class="col">
-                <div class="mb-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="duedate"
-                    placeholder="Due Date">
+                <div class="d-grid gap-2">
+                  <div class="mb-3">
+                    <input
+                      type="date"
+                      style="max-width: 40vw"
+                      class="form-control"
+                      name="duedate"
+                      placeholder="Due Date">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="btn btn-success">Create Task</div>
+        <div class="btn btn-success" data-bs-dismiss="offcanvas" @click="createTask()">Create Task</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
-  name: 'MyDos'
+  name: 'MyDos',
+  mounted() {
+    this.getTasks();
+  },
+  data() {
+    return {
+      title: '',
+      description: '',
+      priority: '',
+      private_task: true,
+      duedate: '',
+      uploadUrl: ''
+    };
+  },
+  computed: {
+    incompleteTasks() {
+      return this.$store.state.tasks.mytasks.filter((task) => !task.complete)
+    }
+  },
+  methods: {
+    ...mapActions([
+      'getTasks'
+    ]),
+    createTask() {
+      this.$store.dispatch('createTask', {
+        title: this.title,
+        description: this.description,
+        priority: this.priority,
+        private: this.private_task,
+        imageUrl: 'https://google.com'
+      });
+      this.title = '';
+      this.description = '';
+      this.priority = '';
+      this.private_task = false;
+    }
+  }
 }
 </script>

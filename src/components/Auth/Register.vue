@@ -5,7 +5,7 @@
       <h1 class="h3 mb-3 fw-normal">Create a new account</h1>
 
       <div class="form-floating">
-        <input type="username" class="form-control" id="floatingName" v-model="username" placeholder="Name">
+        <input type="displayName" class="form-control" id="floatingName" v-model="displayName" placeholder="Name">
         <label for="floatingName">Username</label>
       </div>
       <div class="form-floating mt-3">
@@ -29,7 +29,7 @@ export default {
   name: 'Register',
   data() {
     return {
-      username: '',
+      displayName: '',
       email: '',
       password: ''
     };
@@ -41,7 +41,7 @@ export default {
     signUpAttempt(e) {
       e.preventDefault();
       this.signup({
-        username: this.username, 
+        displayName: this.displayName, 
         email: this.email,
         password: this.password
       });

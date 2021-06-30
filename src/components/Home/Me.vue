@@ -1,10 +1,10 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid pt-5">
     <div class="text-center mt-5">
-      <img class="rounded-circle" :src="`https://ui-avatars.com/api/?name=${user.username}?size=100`" alt="">
+      <img class="rounded-circle" :src="`https://ui-avatars.com/api/?name=${user.displayName}?size=100`" alt="">
       <br>
       <br>
-      <h4 class="display-5">{{ user.username }}</h4>
+      <h4 class="display-5">{{ user.displayName }}</h4>
       <br>
       <button @click="logOutAttempt()" class="btn btn-danger">Log out</button>
     </div>
@@ -17,7 +17,9 @@ import { mapState } from 'vuex';
 export default {
   name: 'Me',
   computed: {
-    ...mapState(['user'])
+    ...mapState({
+      user: state => state.user,
+    }),
   },
   methods: {
     logOutAttempt() {
