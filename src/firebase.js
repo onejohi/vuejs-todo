@@ -12,6 +12,7 @@ firebase.initializeApp({
 
 const db = firebase.firestore()
 const auth = firebase.auth()
+const storage = firebase.storage()
 
 const usersCollection = db.collection('users')
 const tasksCollection = db.collection('tasks')
@@ -20,6 +21,7 @@ const likesCollection = db.collection('likes')
 export {
   db,
   auth,
+  storage,
   usersCollection,
   tasksCollection,
   likesCollection

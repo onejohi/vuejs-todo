@@ -62,6 +62,27 @@ export default {
         commit('setPublicTasks', taskArray);
       })
     },
+    async searchTasks({ commit }, searchInput) {
+      const uid = fb.auth.currentUser.uid;
+      fb.tasksCollection
+        .where('userId', '==', uid)
+        .onSnapshot((snapshot) => {
+          let taskArray = [];
+          snapshot.forEach((doc) => {
+            let task = doc.data()
+            task.id = doc.id
+
+            taskArray.push(task)
+          });
+
+          const searchResults = taskArray.filter(
+            (task) =>  { 
+              if (task.title.includes(searchInput) || task.description.includes(searchInput)) return task;
+            }
+          );
+          commit('setTasks', searchResults);
+        });
+    },
     async createTask(_, params) {
       console.log({ user: fb.auth.currentUser });
       await fb.tasksCollection.add({
