@@ -13,14 +13,19 @@ import Register from './components/Auth/Register.vue';
 export default createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '', name: 'home', component: Home, children: [
-      { path: '', name: 'mydos', component: MyDos },
+    {
+      path: '',
+      name: 'home',
+      meta: { requiresAuth: true },
+      component: Home,
+      children: [
+      { path: '', name: 'mydos', component: MyDos, },
       { path: 'wedo', name: 'wedo', component: WeDo },
       { path: 'users', name: 'users', component: Users },
       { path: 'me', name: 'me', component: Me }
     ] },
-    { path: '/login', name: 'auth', component: Auth, children: [
-      { path: '/', name: 'login', component: Login },
+    { path: '/auth', name: 'auth', component: Auth, children: [
+      { path: '', name: 'login', component: Login },
       { path: '/register', name: 'register', component: Register }
     ]}
   ],
