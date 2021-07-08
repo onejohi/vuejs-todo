@@ -31,6 +31,15 @@ export default createStore({
       if (userProfile.exists ) 
       commit('setUserProfile', userProfile.data());
     },
+    async authorizeUser() {
+      const token = window.localStorage.getItem('token');
+      if (!token) {
+        router.push({ name: 'login' });
+      }
+      if (token) {
+        // TODO: verifiy user form backend
+      }
+    },
     async signup({ dispatch }, form) {
       const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
       await fb.usersCollection.doc(user.uid).set({
